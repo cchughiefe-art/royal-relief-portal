@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Relief | Sovereign Council Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #C9A45C; --black: #080808; }
+        body { background-color: var(--black); color: white; font-family: 'Montserrat', sans-serif; }
+        .font-arabic { font-family: 'Tajawal', sans-serif; }
+        .gold-text { color: var(--gold); }
+        @keyframes rotate-gold { 100% { transform: rotate(360deg); } }
+        .aura { position: relative; overflow: hidden; }
+        .aura::after {
+            content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: conic-gradient(from 0deg, transparent, #c9a45c, transparent 30%);
+            animation: rotate-gold 8s linear infinite; opacity: 0.15; z-index: 0;
+        }
+    </style>
+</head>
+<body>
+    <nav class="p-5 border-b border-zinc-800 flex justify-between items-center bg-black/80 sticky top-0 z-50">
+        <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 border border-[#C9A45C] rounded-full flex items-center justify-center shadow-[0_0_15px_#C9A45C33]">
+                <span class="gold-text font-bold italic">R</span>
+            </div>
+            <div>
+                <h1 class="text-[10px] font-black tracking-widest gold-text uppercase text-left">Royal Relief</h1>
+                <p class="text-[8px] text-zinc-500 uppercase text-left">Dubai Strategic Hub</p>
+            </div>
+        </div>
+        <div class="text-[9px] font-bold text-zinc-400 bg-zinc-900 px-2 py-1 rounded border border-zinc-800">
+            IACAD: 2026-LIVE-PREVIEW
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-6 py-12">
+        <header class="text-center mb-16">
+            <h2 class="gold-text font-arabic text-3xl mb-2 font-bold">بأمر من المهمة الإنسانية</h2>
+            <h2 class="gold-text text-3xl font-black uppercase mb-6">By Royal Proclamation</h2>
+            <p class="text-zinc-500 text-sm max-w-lg mx-auto italic leading-relaxed">
+                "The Sovereignty of relief is the honor of the nation. Enrollment for the Council of Guardians is now open."
+            </p>
+        </header>
+
+        <div id="gateway" class="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+            <div onclick="openPortal('royal')" class="aura cursor-pointer bg-zinc-900/40 border border-[#C9A45C]/40 p-10 rounded-[2.5rem] text-center transition-all hover:scale-[1.02]">
+                <div class="relative z-10">
+                    <div class="text-5xl mb-4">👑</div>
+                    <h3 class="text-xl font-bold mb-2">Royal Membership</h3>
+                    <p class="text-xs text-zinc-500 uppercase font-black tracking-widest">Enrollment: 500+ AED</p>
+                </div>
+            </div>
+            <div onclick="openPortal('silent')" class="cursor-pointer bg-zinc-900/20 border border-zinc-800 p-10 rounded-[2.5rem] text-center transition-all hover:bg-zinc-800/50">
+                <div class="text-5xl mb-4">🛡️</div>
+                <h3 class="text-xl font-bold mb-2">Silent Guardian</h3>
+                <p class="text-xs text-zinc-500 uppercase font-black tracking-widest">Anonymous Privacy</p>
+            </div>
+        </div>
+
+        <div id="portal-form" class="hidden max-w-md mx-auto mt-8 bg-zinc-900 p-8 rounded-[3rem] border border-zinc-800 shadow-2xl">
+            <button onclick="location.reload()" class="text-[#C9A45C] text-[10px] font-black mb-8 uppercase tracking-[0.2em]">← Return</button>
+            <form id="reliefForm" class="space-y-6 text-left">
+                <h3 id="form-header" class="text-2xl font-bold text-center mb-6">Enrollment</h3>
+                <div id="royal-only" class="hidden"><input type="text" id="donor_name" placeholder="Full Name (Official)" class="w-full bg-black border border-zinc-800 p-4 rounded-2xl outline-none focus:border-[#C9A45C] text-sm"></div>
+                <div class="bg-black/50 p-4 rounded-2xl border border-zinc-800">
+                    <label class="text-[9px] text-zinc-600 font-black uppercase mb-1 block">Hub Location</label>
+                    <p id="location-text" class="text-white text-xs font-bold tracking-widest uppercase">📍 Connecting Dubai Hub...</p>
+                </div>
+                <div class="relative border-2 border-dashed border-zinc-800 rounded-3xl p-10 text-center hover:border-zinc-500 transition-all cursor-pointer">
+                    <input type="file" required class="absolute inset-0 opacity-0 cursor-pointer">
+                    <p class="text-[10px] text-zinc-400 font-black uppercase tracking-widest">Snap Roblox Card Photo</p>
+                </div>
+                <button type="submit" class="w-full bg-white text-black font-black py-5 rounded-[2rem] uppercase tracking-widest hover:bg-[#C9A45C] transition-all">Submit Asset</button>
+            </form>
+        </div>
+
+        <div id="success" class="hidden text-center py-20 animate-in zoom-in duration-700">
+            <div class="w-20 h-20 bg-green-900/20 border border-green-600/50 rounded-full flex items-center justify-center mx-auto mb-8"><span class="text-green-500 text-3xl">✓</span></div>
+            <h2 class="text-3xl font-black gold-text mb-4 uppercase">Secured</h2>
+            <div class="bg-zinc-950 p-8 rounded-[2.5rem] border border-[#C9A45C]/30 inline-block">
+                <p class="text-[10px] text-zinc-500 font-black uppercase mb-2 tracking-widest">Tracking Reference</p>
+                <p id="ref-id" class="text-white font-mono text-2xl font-bold tracking-[0.3em] uppercase"></p>
+            </div>
+            <p class="text-zinc-500 text-[10px] uppercase tracking-widest mt-8">Redirecting to Dashboard...</p>
+        </div>
+    </main>
+
+    <script>
+        setTimeout(() => { document.getElementById('location-text').innerText = "📍 DUBAI HUB CONNECTED"; }, 1500);
+        function openPortal(type) {
+            document.getElementById('gateway').classList.add('hidden');
+            document.getElementById('portal-form').classList.remove('hidden');
+            if (type === 'royal') { 
+                document.getElementById('royal-only').classList.remove('hidden');
+                document.getElementById('form-header').innerText = 'Royal Enrollment';
+            }
+        }
+        document.getElementById('reliefForm').onsubmit = function(e) {
+            e.preventDefault();
+            const name = document.getElementById('donor_name').value || 'Silent Guardian';
+            const ref = 'RR-' + Math.random().toString(36).toUpperCase().substring(2, 8);
+            document.getElementById('portal-form').classList.add('hidden');
+            document.getElementById('success').classList.remove('hidden');
+            document.getElementById('ref-id').innerText = ref;
+            setTimeout(() => { window.location.href = `dashboard.html?user=${encodeURIComponent(name)}&ref=${ref}`; }, 3000);
+        }
+    </script>
+</body>
+  </html>
+  
