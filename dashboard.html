@@ -3,56 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sovereign Dashboard</title>
+    <title> Royal Member Dashboard | Identity Card</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <style>
-        body { background-color: #080808; color: white; font-family: 'Montserrat', sans-serif; }
-        .gold-border { border: 1px solid #C9A45C; box-shadow: 0 0 20px rgba(201,164,92,0.2); }
+        body { background-color: #050505; color: white; font-family: 'Montserrat', sans-serif; }
+        .id-card { background: linear-gradient(145deg, #0d0d0d, #000); border: 1px solid #C9A45C44; border-radius: 2rem; padding: 30px; width: 320px; height: 460px; }
     </style>
 </head>
-<body class="p-6 md:p-12">
-    <div class="max-w-5xl mx-auto">
-        <header class="flex justify-between items-center mb-12">
-            <div>
-                <p class="text-[#C9A45C] text-[10px] font-black uppercase tracking-[0.3em]">Sovereign Member</p>
-                <h1 id="user-name" class="text-2xl font-black italic tracking-tighter uppercase">Welcome</h1>
+<body class="p-6 flex flex-col items-center">
+    <div id="capture-area" class="p-4 mb-8">
+        <div class="id-card flex flex-col justify-between">
+            <div class="flex justify-between items-start">
+                <span class="text-[9px] text-[#C9A45C] font-bold uppercase tracking-widest">Royal Member</span>
+                <div class="italic font-black text-[#C9A45C] text-lg">R</div>
             </div>
-            <div class="w-12 h-12 border border-zinc-800 rounded-full flex items-center justify-center">👑</div>
-        </header>
-
-        <div class="grid md:grid-cols-3 gap-8">
-            <div class="md:col-span-1 space-y-6">
-                <div class="gold-border bg-zinc-900/40 p-8 rounded-[2.5rem] text-center">
-                    <div class="text-4xl mb-4">⚜️</div>
-                    <p id="user-loc" class="text-[9px] text-zinc-500 font-black uppercase tracking-widest italic"></p>
-                </div>
-                <div class="bg-zinc-900/20 border border-zinc-800 p-8 rounded-[2.5rem] text-center">
-                    <p class="text-[9px] text-zinc-500 font-black uppercase mb-2">Declared Value</p>
-                    <p class="text-3xl font-black"><span id="user-val">0</span> <span class="text-[#C9A45C] text-xs">VAL</span></p>
+            <div class="space-y-4">
+                <div><p class="text-[8px] text-zinc-500 uppercase font-black">Name</p><h2 id="disp-name" class="text-xl font-black uppercase italic">---</h2></div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div><p class="text-[8px] text-zinc-500 uppercase font-black">Value</p><p id="disp-val" class="text-lg font-black text-[#C9A45C]">0</p></div>
+                    <div><p class="text-[8px] text-zinc-500 uppercase font-black">Ref</p><p id="disp-ref" class="text-xs font-mono font-bold text-zinc-300">---</p></div>
                 </div>
             </div>
-
-            <div class="md:col-span-2 bg-zinc-900/30 border border-zinc-800 rounded-[3rem] p-10">
-                <h3 class="text-[10px] text-zinc-500 font-black uppercase tracking-widest mb-6">Asset Verification Status</h3>
-                <div class="flex justify-between items-center bg-black p-6 rounded-2xl border border-zinc-800">
-                    <div>
-                        <p id="user-ref" class="text-sm font-black tracking-widest text-[#C9A45C]"></p>
-                        <p id="user-asset" class="text-[9px] uppercase font-bold mt-1 text-zinc-500"></p>
-                    </div>
-                    <span class="text-[8px] bg-zinc-800 px-3 py-1 rounded-full text-zinc-400 font-black uppercase">Pending</span>
-                </div>
-                <p class="text-zinc-600 text-[10px] mt-10 italic italic leading-relaxed">Verification node active. Assets are processed through the Sovereign Hub within 2-4 hours.</p>
+            <div class="border-t border-zinc-900 pt-4 text-center">
+                <p id="disp-phone" class="text-[10px] font-bold text-zinc-400">---</p>
             </div>
         </div>
     </div>
-
+    <div class="w-full max-w-xs space-y-4">
+        <button onclick="downloadID()" class="w-full bg-white text-black py-4 rounded-xl font-black uppercase text-[10px]">📥 Download Card</button>
+        <button onclick="verifyWA()" class="w-full bg-[#C9A45C] text-black py-4 rounded-xl font-black uppercase text-[10px]">📱 Verify WhatsApp</button>
+    </div>
     <script>
         const params = new URLSearchParams(window.location.search);
-        document.getElementById('user-name').innerText = params.get('user') || 'Member';
-        document.getElementById('user-ref').innerText = params.get('ref') || 'RR-PENDING';
-        document.getElementById('user-asset').innerText = params.get('asset') || 'Asset';
-        document.getElementById('user-val').innerText = params.get('val') || '0';
-        document.getElementById('user-loc').innerText = params.get('loc') || 'DUBAI HUB';
+        document.getElementById('disp-name').innerText = params.get('user');
+        document.getElementById('disp-ref').innerText = params.get('ref');
+        document.getElementById('disp-val').innerText = `$${params.get('val')}`;
+        document.getElementById('disp-phone').innerText = `+${params.get('phone')}`;
+
+        function downloadID() {
+            html2canvas(document.getElementById('capture-area'), { backgroundColor: '#050505' }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `Royal_ID_${params.get('ref')}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        }
+        function verifyWA() {
+            window.location.href = `https://wa.me/971500000000?text=Verify%20Ref:%20${params.get('ref')}`;
+        }
     </script>
 </body>
 </html>
