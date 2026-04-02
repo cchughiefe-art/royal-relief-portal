@@ -89,24 +89,48 @@
     </main>
 
     <script>
-        setTimeout(() => { document.getElementById('location-text').innerText = "📍 DUBAI HUB CONNECTED"; }, 1500);
-        function openPortal(type) {
-            document.getElementById('gateway').classList.add('hidden');
-            document.getElementById('portal-form').classList.remove('hidden');
-            if (type === 'royal') { 
-                document.getElementById('royal-only').classList.remove('hidden');
-                document.getElementById('form-header').innerText = 'Royal Enrollment';
-            }
+    // 1. REAL-TIME LOCATION TRACKER (Replaces the old static version)
+    const params = new URLSearchParams(window.location.search);
+    const detectedCity = params.get('user_city') || 'Dubai';
+    const detectedCountry = params.get('user_country') || 'AE';
+
+    // Update the UI based on real location data from the Middleware
+    setTimeout(() => {
+        const locText = document.getElementById('location-text');
+        locText.innerText = `📍 ${detectedCity.toUpperCase()}, ${detectedCountry} HUB CONNECTED`;
+        
+        // Advanced: If they are NOT in the UAE, change the Branding
+        if (detectedCountry !== 'AE') {
+            const logoText = document.querySelector('.gold-text');
+            if(logoText) logoText.innerText = "Global Relief";
         }
-        document.getElementById('reliefForm').onsubmit = function(e) {
-            e.preventDefault();
-            const name = document.getElementById('donor_name').value || 'Silent Guardian';
-            const ref = 'RR-' + Math.random().toString(36).toUpperCase().substring(2, 8);
-            document.getElementById('portal-form').classList.add('hidden');
-            document.getElementById('success').classList.remove('hidden');
-            document.getElementById('ref-id').innerText = ref;
-            setTimeout(() => { window.location.href = `dashboard.html?user=${encodeURIComponent(name)}&ref=${ref}`; }, 3000);
+    }, 1000);
+
+    // 2. PORTAL LOGIC (Existing)
+    function openPortal(type) {
+        document.getElementById('gateway').classList.add('hidden');
+        document.getElementById('portal-form').classList.remove('hidden');
+        if (type === 'royal') { 
+            document.getElementById('royal-only').classList.remove('hidden');
+            document.getElementById('form-header').innerText = 'Royal Enrollment';
         }
+    }
+
+    // 3. SUBMISSION & REDIRECT (Existing)
+    document.getElementById('reliefForm').onsubmit = function(e) {
+        e.preventDefault();
+        const name = document.getElementById('donor_name').value || 'Silent Guardian';
+        const ref = 'RR-' + Math.random().toString(36).toUpperCase().substring(2, 8);
+        
+        document.getElementById('portal-form').classList.add('hidden');
+        document.getElementById('success').classList.remove('hidden');
+        document.getElementById('ref-id').innerText = ref;
+        
+        // Redirect to Dashboard with Location & Name Data
+        setTimeout(() => { 
+            window.location.href = `dashboard.html?user=${encodeURIComponent(name)}&ref=${ref}&user_city=${detectedCity}&user_country=${detectedCountry}`; 
+        }, 3000);
+    }
     </script>
 </body>
   </html>
