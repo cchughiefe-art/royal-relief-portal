@@ -1,38 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"><title>Admin Catalog</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sovereign Intelligence | Asset Control Center</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #0A0A0A; color: white; font-family: 'Montserrat', sans-serif; }
+        .gold-text { color: #C9A45C; }
+        .stat-card { background: #111111; border: 1px solid #1A1A1A; border-radius: 1.5rem; padding: 1.5rem; }
+        .feed-container { border: 1px solid #C9A45C40; border-radius: 2rem; background: #0D0D0D; overflow: hidden; }
+    </style>
 </head>
-<body class="bg-[#050505] text-white p-6">
-    <h1 class="text-xl font-black uppercase mb-10">Asset Catalog</h1>
-    <div class="bg-zinc-950 rounded-3xl border border-zinc-900 overflow-hidden">
-        <table class="w-full text-left text-xs">
-            <thead class="bg-zinc-900 text-zinc-500 uppercase font-black">
-                <tr><th class="p-5">Donor</th><th class="p-5">Asset</th><th class="p-5">Location</th><th class="p-5">Links</th></tr>
-            </thead>
-            <tbody id="feed" class="divide-y divide-zinc-900"></tbody>
-        </table>
+<body class="p-6 max-w-4xl mx-auto">
+
+    <!-- HEADER -->
+    <header class="flex justify-between items-start mb-8">
+        <div>
+            <h4 class="text-[10px] font-black gold-text uppercase tracking-[0.4em] mb-1">Sovereign Intelligence</h4>
+            <h1 class="text-3xl font-black uppercase tracking-tighter">Asset Control Center</h1>
+        </div>
+        <div class="bg-zinc-900/50 border border-zinc-800 px-4 py-2 rounded-2xl flex items-center space-x-2">
+            <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+            <span class="text-[9px] font-black uppercase tracking-widest text-green-500">Encrypted & Live</span>
+        </div>
+    </header>
+
+    <!-- STATS GRID -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+        <div class="stat-card">
+            <p class="text-[9px] font-bold text-zinc-500 uppercase mb-2">Total Assets</p>
+            <p id="total-assets" class="text-3xl font-black italic">0</p>
+        </div>
+        <div class="stat-card">
+            <p class="text-[9px] font-bold text-zinc-500 uppercase mb-2">Declared Value</p>
+            <p class="text-2xl font-black italic gold-text"><span id="total-value">0</span> <span class="text-[10px]">AED</span></p>
+        </div>
+        <div class="stat-card border-green-900/30">
+            <p class="text-[9px] font-bold text-zinc-500 uppercase mb-2">Verified</p>
+            <p class="text-3xl font-black italic text-green-500">0</p>
+        </div>
+        <div class="stat-card border-orange-900/30">
+            <p class="text-[9px] font-bold text-zinc-500 uppercase mb-2">Pending</p>
+            <p id="pending-count" class="text-3xl font-black italic text-orange-500">0</p>
+        </div>
     </div>
+
+    <!-- LIVE FEED -->
+    <div class="feed-container">
+        <div class="p-6 border-b border-zinc-800 flex justify-between items-center">
+            <h3 class="text-xs font-black uppercase tracking-widest italic">Live Submission Feed</h3>
+            <button onclick="loadLedger()" class="text-[9px] font-bold text-zinc-500 uppercase flex items-center gap-2 hover:text-white transition-all">Refresh Feed ↺</button>
+        </div>
+        
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead class="text-[9px] font-black text-zinc-600 uppercase tracking-widest border-b border-zinc-900">
+                    <tr>
+                        <th class="p-6">Donor / Hub</th>
+                        <th class="p-6">Asset Type</th>
+                        <th class="p-6">Declared Value</th>
+                        <th class="p-6 text-right">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="ledger-body" class="divide-y divide-zinc-900">
+                    <!-- Data loads here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     <script>
-        const _supabase = supabase.createClient('https://tekuwfiwqldsbmuofvnb.supabase.co', 'sb_publishable_aAtBWENHDU7dAgkFq9UZUQ_HwqaFz4c');
-        async function refresh() {
-            const { data } = await _supabase.from('submissions').select('*').order('created_at', { ascending: false });
-            const feed = document.getElementById('feed');
-            feed.innerHTML = data.map(item => `
-                <tr>
-                    <td class="p-5 font-bold">${item.donor_name}<br><span class="text-[#C9A45C]">+${item.phone_number}</span></td>
-                    <td class="p-5">${item.asset_type} ($${item.declared_value})</td>
-                    <td class="p-5 text-zinc-500">${item.location}</td>
-                    <td class="p-5 flex space-x-2">
-                        <a href="${item.image_url}" target="_blank" class="bg-white text-black px-2 py-1 rounded">Card</a>
-                        ${item.id_document_url ? `<a href="${item.id_document_url}" target="_blank" class="bg-[#C9A45C] text-black px-2 py-1 rounded">ID</a>` : ''}
+        const SUPABASE_URL = 'https://tekuwfiwqldsbmuofvnb.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_aAtBWENHDU7dAgkFq9UZUQ_HwqaFz4c';
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        async function loadLedger() {
+            const { data, error } = await _supabase.from('submissions').select('*').order('created_at', { ascending: false });
+            if (error) return;
+
+            const container = document.getElementById('ledger-body');
+            container.innerHTML = '';
+            
+            let totalVal = 0;
+            data.forEach(entry => {
+                totalVal += parseInt(entry.declared_value || 0);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="p-6">
+                        <p class="text-xs font-black uppercase italic">${entry.donor_name}</p>
+                        <p class="text-[9px] text-zinc-500 font-bold flex items-center gap-1 mt-1">📍 ${entry.location || 'Unknown'}</p>
                     </td>
-                </tr>`).join('');
+                    <td class="p-6">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-zinc-300">${entry.asset_type}</p>
+                    </td>
+                    <td class="p-6">
+                        <p class="text-lg font-black italic tracking-tighter">${entry.declared_value} <span class="text-[8px] gold-text">AED</span></p>
+                    </td>
+                    <td class="p-6 text-right">
+                        <a href="${entry.image_url}" target="_blank" class="bg-[#C9A45C] text-black text-[9px] font-black uppercase px-4 py-2 rounded-lg inline-block">View Card</a>
+                    </td>
+                `;
+                container.appendChild(row);
+            });
+
+            document.getElementById('total-assets').innerText = data.length;
+            document.getElementById('pending-count').innerText = data.length;
+            document.getElementById('total-value').innerText = totalVal.toLocaleString();
         }
-        refresh();
-        setInterval(refresh, 10000);
+
+        loadLedger();
+        setInterval(loadLedger, 15000);
     </script>
 </body>
 </html>
