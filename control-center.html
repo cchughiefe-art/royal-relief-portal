@@ -3,13 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sovereign Control Center | Admin</title>
+    <title>Sovereign Control Center | Admin Live</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700;900&display=swap" rel="stylesheet">
     <style>
         body { background-color: #050505; color: white; font-family: 'Montserrat', sans-serif; }
         .admin-card { background: rgba(20, 20, 20, 0.8); border: 1px solid #333; transition: all 0.3s; }
         .admin-card:hover { border-color: #C9A45C; }
-        .status-badge { font-size: 8px; padding: 2px 8px; border-radius: 99px; font-weight: 900; uppercase; }
+        .shimmer-text { background: linear-gradient(90deg, #fff, #C9A45C, #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-size: 200% auto; animation: shine 3s linear infinite; }
+        @keyframes shine { to { background-position: 200% center; } }
     </style>
 </head>
 <body class="p-4 md:p-10">
@@ -18,79 +21,54 @@
     <header class="max-w-6xl mx-auto flex justify-between items-center mb-10 border-b border-zinc-800 pb-6">
         <div>
             <h1 class="text-[#C9A45C] text-[10px] font-black uppercase tracking-[0.4em]">Sovereign Intelligence</h1>
-            <h2 class="text-2xl font-bold tracking-tighter">Asset Control Center</h2>
+            <h2 class="text-2xl font-bold tracking-tighter uppercase italic">Asset Control Center</h2>
         </div>
-        <div class="bg-zinc-900 px-4 py-2 rounded-xl border border-zinc-800">
+        <div class="bg-zinc-900 px-4 py-2 rounded-xl border border-zinc-800 text-right">
             <p class="text-[8px] text-zinc-500 font-black uppercase">System Status</p>
-            <p class="text-green-500 text-xs font-bold animate-pulse">● ENCRYPTED & LIVE</p>
+            <p id="status-light" class="text-green-500 text-xs font-bold animate-pulse">● ENCRYPTED & LIVE</p>
         </div>
     </header>
 
     <main class="max-w-6xl mx-auto">
-        <!-- STATS OVERVIEW -->
+        <!-- LIVE STATS OVERVIEW -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
             <div class="admin-card p-6 rounded-2xl">
-                <p class="text-[9px] text-zinc-500 uppercase font-black mb-1">Total Assets</p>
-                <p class="text-2xl font-bold">14</p>
+                <p class="text-[9px] text-zinc-500 uppercase font-black mb-1">Total Submissions</p>
+                <p id="stat-total" class="text-2xl font-bold text-white">0</p>
             </div>
             <div class="admin-card p-6 rounded-2xl">
-                <p class="text-[9px] text-zinc-500 uppercase font-black mb-1">Declared Value</p>
-                <p class="text-2xl font-bold text-[#C9A45C]">4,250 <span class="text-[10px]">AED</span></p>
+                <p class="text-[9px] text-zinc-500 uppercase font-black mb-1">Gross Declared Value</p>
+                <p id="stat-value" class="text-2xl font-bold text-[#C9A45C]">0 <span class="text-[10px]">VAL</span></p>
             </div>
             <div class="admin-card p-6 rounded-2xl border-green-900/30">
-                <p class="text-[9px] text-zinc-500 uppercase font-black mb-1">Verified</p>
-                <p class="text-2xl font-bold text-green-500">9</p>
+                <p class="text-[9px] text-zinc-500 uppercase font-black mb-1">Active Hubs</p>
+                <p id="stat-hubs" class="text-2xl font-bold text-green-500">1</p>
             </div>
-            <div class="admin-card p-6 rounded-2xl border-yellow-900/30">
-                <p class="text-[9px] text-zinc-500 uppercase font-black mb-1">Pending</p>
-                <p class="text-2xl font-bold text-yellow-500">5</p>
+            <div class="admin-card p-6 rounded-2xl border-blue-900/30">
+                <p class="text-[9px] text-zinc-500 uppercase font-black mb-1">Last Update</p>
+                <p id="stat-time" class="text-sm font-bold text-blue-400 uppercase mt-2">Just Now</p>
             </div>
         </div>
 
         <!-- LIVE FEED TABLE -->
         <div class="admin-card rounded-[2rem] overflow-hidden">
             <div class="p-6 border-b border-zinc-800 bg-zinc-900/50 flex justify-between items-center">
-                <h3 class="text-xs font-black uppercase tracking-widest">Live Submission Feed</h3>
-                <button onclick="location.reload()" class="text-[9px] text-zinc-500 hover:text-white uppercase font-bold">Refresh Feed ↻</button>
+                <h3 class="text-xs font-black uppercase tracking-widest shimmer-text">Live Asset Influx</h3>
+                <button onclick="fetchLiveSubmissions()" class="text-[9px] text-zinc-500 hover:text-white uppercase font-bold border border-zinc-800 px-3 py-1 rounded-full transition-all">Manual Refresh ↻</button>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-xs">
                     <thead class="bg-zinc-900/30 text-zinc-500 uppercase font-black border-b border-zinc-800">
                         <tr>
-                            <th class="p-5">Ref ID</th>
-                            <th class="p-5">Donor / Hub</th>
+                            <th class="p-5">Reference</th>
+                            <th class="p-5">Donor / Source Hub</th>
                             <th class="p-5">Asset Type</th>
                             <th class="p-5">Declared Value</th>
                             <th class="p-5">Action</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-zinc-800">
-                        <!-- Example Entry 1 -->
-                        <tr class="hover:bg-zinc-900/20 transition-colors">
-                            <td class="p-5 font-mono text-[#C9A45C] font-bold tracking-widest">RR-X92B1</td>
-                            <td class="p-5">
-                                <p class="font-bold">Hassan Al-Maktoum</p>
-                                <p class="text-[9px] text-zinc-500 uppercase tracking-tighter">📍 Dubai, AE</p>
-                            </td>
-                            <td class="p-5 font-bold uppercase text-[10px]">Razer Gold</td>
-                            <td class="p-5 font-black text-white italic text-lg">500 <span class="text-[8px] text-zinc-500">AED</span></td>
-                            <td class="p-5">
-                                <button class="bg-white text-black px-4 py-2 rounded-lg font-black uppercase text-[9px] hover:bg-[#C9A45C]">View Card</button>
-                            </td>
-                        </tr>
-                        <!-- Example Entry 2 -->
-                        <tr class="hover:bg-zinc-900/20 transition-colors">
-                            <td class="p-5 font-mono text-zinc-500 font-bold tracking-widest">RR-P08L2</td>
-                            <td class="p-5">
-                                <p class="font-bold text-zinc-400">Silent Guardian</p>
-                                <p class="text-[9px] text-zinc-500 uppercase tracking-tighter">📍 Port Harcourt, NG</p>
-                            </td>
-                            <td class="p-5 font-bold uppercase text-[10px]">Roblox</td>
-                            <td class="p-5 font-black text-white italic text-lg">100 <span class="text-[8px] text-zinc-500">VAL</span></td>
-                            <td class="p-5">
-                                <button class="bg-zinc-800 text-zinc-400 px-4 py-2 rounded-lg font-black uppercase text-[9px]">Verified</button>
-                            </td>
-                        </tr>
+                    <tbody id="submission-feed" class="divide-y divide-zinc-800">
+                        <!-- LIVE ROWS INJECTED HERE -->
                     </tbody>
                 </table>
             </div>
@@ -98,7 +76,76 @@
     </main>
 
     <footer class="mt-20 text-center">
-        <p class="text-[9px] text-zinc-700 uppercase tracking-[0.4em]">Proprietary Sovereign Intelligence Terminal • v1.0.2</p>
+        <p class="text-[9px] text-zinc-700 uppercase tracking-[0.4em]">Proprietary Sovereign Intelligence Terminal • Connection Secure</p>
     </footer>
+
+    <script>
+        // 1. SUPABASE CONFIGURATION
+        const SUPABASE_URL = 'https://tekuwfiwqldsbmuofvnb.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_aAtBWENHDU7dAgkFq9UZUQ_HwqaFz4c'; 
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        async function fetchLiveSubmissions() {
+            document.getElementById('status-light').innerText = "● SYNCING...";
+            
+            try {
+                const { data, error } = await _supabase
+                    .from('submissions')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                const feedBody = document.getElementById('submission-feed');
+                feedBody.innerHTML = ''; // Clear old data
+
+                let totalVal = 0;
+                let uniqueHubs = new Set();
+
+                if (data.length === 0) {
+                    feedBody.innerHTML = `<tr><td colspan="5" class="p-10 text-center text-zinc-600 uppercase font-black tracking-widest">No assets in vault</td></tr>`;
+                }
+
+                data.forEach(item => {
+                    // Update Stats Logic
+                    totalVal += parseFloat(item.declared_value || 0);
+                    if(item.location) uniqueHubs.add(item.location);
+
+                    // Create Row
+                    feedBody.innerHTML += `
+                        <tr class="hover:bg-zinc-900/40 transition-colors border-l-2 border-transparent hover:border-[#C9A45C]">
+                            <td class="p-5 font-mono text-[#C9A45C] font-bold tracking-widest uppercase text-[10px]">RR-${item.id}</td>
+                            <td class="p-5">
+                                <p class="font-bold text-white">${item.donor_name || 'Anonymous'}</p>
+                                <p class="text-[9px] text-zinc-500 uppercase tracking-tighter">${item.location || 'Unknown Hub'}</p>
+                            </td>
+                            <td class="p-5 font-bold uppercase text-[10px] text-zinc-300">${item.asset_type}</td>
+                            <td class="p-5">
+                                <p class="font-black text-white italic text-lg">${item.declared_value} <span class="text-[8px] text-zinc-500">VAL</span></p>
+                            </td>
+                            <td class="p-5">
+                                <a href="${item.image_url}" target="_blank" class="inline-block bg-white text-black px-6 py-2 rounded-xl font-black uppercase text-[9px] hover:bg-[#C9A45C] transition-all transform hover:scale-105">View Asset</a>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                // Update Overview Cards
+                document.getElementById('stat-total').innerText = data.length;
+                document.getElementById('stat-value').innerText = totalVal.toLocaleString() + " VAL";
+                document.getElementById('stat-hubs').innerText = uniqueHubs.size || 1;
+                document.getElementById('stat-time').innerText = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                document.getElementById('status-light').innerText = "● ENCRYPTED & LIVE";
+
+            } catch (err) {
+                console.error("Feed Error:", err.message);
+                document.getElementById('status-light').innerText = "● CONNECTION ERROR";
+            }
+        }
+
+        // Initialize and setup Auto-Refresh every 15 seconds
+        fetchLiveSubmissions();
+        setInterval(fetchLiveSubmissions, 15000);
+    </script>
 </body>
 </html>
