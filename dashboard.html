@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sovereign Dashboard | 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #080808; color: white; font-family: 'Montserrat', sans-serif; }
+        .gold-border { border: 1px solid #C9A45C; box-shadow: 0 0 20px #C9A45C33; }
+    </style>
+</head>
+<body class="p-6 md:p-12">
+    <header class="max-w-5xl mx-auto flex justify-between items-center mb-12">
+        <div>
+            <h1 class="text-[#C9A45C] text-[10px] font-black uppercase tracking-[0.3em]">Sovereign Dashboard</h1>
+            <h2 id="display-name" class="text-2xl font-bold mt-1 tracking-tighter italic">Welcome, Royal Member</h2>
+        </div>
+        <div class="w-12 h-12 border border-zinc-800 rounded-full flex items-center justify-center text-xl">👑</div>
+    </header>
+
+    <main class="max-w-5xl mx-auto grid md:grid-cols-3 gap-8">
+        <div class="md:col-span-1 space-y-6 text-left">
+            <div class="gold-border rounded-[2.5rem] p-8 bg-zinc-900/30 text-center">
+                <p id="rank-name" class="text-[#C9A45C] font-black uppercase tracking-[0.2em] text-[10px]">Royal Member</p>
+                <div class="text-4xl my-4">⚜️</div>
+                <p class="text-[9px] text-zinc-500 uppercase tracking-widest font-bold">Status: Active Security</p>
+            </div>
+            <div class="bg-zinc-900/50 border border-zinc-800 rounded-[2rem] p-6 text-center">
+                <h4 class="text-[9px] font-black text-zinc-500 uppercase mb-4 tracking-widest">Impact Value</h4>
+                <p class="text-3xl font-black">500 <span class="text-[#C9A45C] text-xs">AED</span></p>
+            </div>
+        </div>
+
+        <div class="md:col-span-2 space-y-8">
+            <div class="bg-zinc-900/30 border border-zinc-800 rounded-[3rem] p-8 text-left">
+                <h4 class="text-[10px] font-black uppercase tracking-widest mb-6 text-zinc-400">Verified Asset Ledger</h4>
+                <div class="flex justify-between items-center p-5 bg-black/50 rounded-2xl border border-zinc-800">
+                    <div>
+                        <p id="ref-display" class="text-xs font-black tracking-widest">RR-DXB-XXXX</p>
+                        <p class="text-[9px] text-zinc-600 uppercase font-bold mt-1">Status: Verification in Progress</p>
+                    </div>
+                    <span class="animate-pulse text-[8px] bg-[#C9A45C]/20 text-[#C9A45C] px-3 py-1 rounded-full font-black uppercase">Pending</span>
+                </div>
+            </div>
+            <div class="bg-[#C9A45C]/5 border border-[#C9A45C]/10 rounded-[3rem] p-8 text-left">
+                <h4 class="text-[#C9A45C] text-[10px] font-black uppercase tracking-widest mb-4">Direct Mission Intel</h4>
+                <p class="text-zinc-400 text-xs italic leading-relaxed">
+                    "Royal Protocol: Once your asset is verified, you will receive exclusive field imagery of the aid distribution your contribution has enabled."
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const user = params.get('user') || 'Royal Member';
+        const ref = params.get('ref') || 'RR-PENDING';
+        document.getElementById('display-name').innerText = `Welcome, ${user}`;
+        document.getElementById('ref-display').innerText = ref;
+        if (user === 'Silent Guardian') {
+            document.getElementById('rank-name').innerText = 'Silent Guardian';
+        }
+    </script>
+</body>
+</html>
+
