@@ -1,0 +1,12 @@
+# Allow all search engines to index the public portal
+User-agent: *
+Allow: /
+Allow: /index.html
+Allow: /dashboard.html
+
+# Hide the private database from Google search results
+Disallow: /control-center.html
+
+# Link to your Sitemap to help Google find you faster
+Sitemap: https://royal-relief.vercel.app/sitemap.xml
+
